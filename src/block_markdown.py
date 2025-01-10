@@ -1,4 +1,5 @@
 from enum import Enum
+import re
 
 class BlockType(Enum):
     PARAGRAPH = "paragraph"
@@ -19,26 +20,36 @@ def markdown_to_blocks(markdown: str) -> list[str]:
         if split_by_line[i] == "":
             block_lines = split_by_line[block_start_index:i]
             if len(block_lines) != 0:
-                block.append(block_lines)
+                block_list.append(block_lines)
             block_start_index = i +1
     
     return list(map("\n".join, block_list))
 
 def block_to_block_type(block: str) -> str:
-    pass
+    if re.match(r"^#{1,6} ",block, re.MULTILINE):
+        return BlockType.HEADING
+    if re.match(r"^```[\s\S]*?```$", block):
+        return BlockType.CODE
+    if re.match("^(>.*(\n|$))+$", block):
+        return BlockType.QUOTE
+    if re.match(r"^((\*|-) .*(\n|$))+$", block):
+        return BlockType.UNORDERED_LIST
+    if __is_orderd_markdown_list(block):
+        return BlockType.ORDERED_LIST
+    return BlockType.PARAGRAPH
+    
+
+def __is_orderd_markdown_list(block: str) -> bool:
+    lines = block.split("\n")
+    for i in range(len(lines)):
+        if not lines[i].startswith(f"{i+1}. "):
+            return False
+    return True
+
 
 if __name__ == "__main__":
-    markdown = """
-    
-    # This is a heading
-
-This is a paragraph of text. It has some **bold** and *italic* words inside of it.
-
-
-
-
-* This is the first list item in a list block
-* This is a list item
-* This is another list item"""
+    markdown = """>dsfa
+>adsfd
+>    ```"""
     result = markdown_to_blocks(markdown)
-    print(result)
+    print(block_to_block_type(result[0]))
