@@ -45,11 +45,3 @@ def __is_orderd_markdown_list(block: str) -> bool:
         if not lines[i].startswith(f"{i+1}. "):
             return False
     return True
-
-
-if __name__ == "__main__":
-    markdown = """>dsfa
->adsfd
->    ```"""
-    result = markdown_to_blocks(markdown)
-    print(block_to_block_type(result[0]))
