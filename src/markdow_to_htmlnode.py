@@ -17,7 +17,37 @@ def text_to_children(text:str) -> HTMLNode:
         case BlockType.PARAGRAPH:
             return paragraph_to_html_node(text)
         case BlockType.HEADING:
-            pass
+            return header_to_html_node(text)
+        case BlockType.CODE:
+            return code_to_html_node(text)
+        case BlockType.QUOTE:
+            return quote_to_html_node(text)
+        case BlockType.UNORDERED_LIST | BlockType.ORDERED_LIST :
+            return list_to_html_node(text, block_type)
+        case _:
+            raise ValueError("Unknown block type")
+        
+def list_to_html_node(text: str, type: BlockType.value) -> HTMLNode:
+    lines = [x[2:] for x in text.split("\n")]
+    list_tag = "ol" if type == BlockType.ORDERED_LIST else "ul"
+    list_node = ParentNode(list_tag, [])
+    for line in lines:
+        list_node.children.append(LeafNode("li", line))
+    return list_node
+        
+def quote_to_html_node(text: str) -> HTMLNode:
+    quote_text = " ".joint([x[2:] for x in text.split("\n")])
+    return LeafNode("blockquote", quote_text)
+  
+def code_to_html_node(text: str) -> HTMLNode:
+    code_text = text.split("\n")[1:-1]
+    return ParentNode("pre", [LeafNode("code", code_text)])
+            
+def header_to_html_node(text: str) -> HTMLNode:
+    splited_text = text.split(maxsplit=1)
+    header_type = len(splited_text[0])
+    header_value = splited_text[1]
+    return LeafNode(f"h{header_type}", header_value)
 
 def paragraph_to_html_node(text: str) -> HTMLNode:
     text_nodes = text_to_textnodes(text)
