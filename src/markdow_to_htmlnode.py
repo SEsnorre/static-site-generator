@@ -27,7 +27,7 @@ def text_to_children(text:str) -> HTMLNode:
         case _:
             raise ValueError("Unknown block type")
         
-def list_to_html_node(text: str, type: BlockType.value) -> HTMLNode:
+def list_to_html_node(text: str, type: BlockType) -> HTMLNode:
     lines = [x[2:] for x in text.split("\n")]
     list_tag = "ol" if type == BlockType.ORDERED_LIST else "ul"
     list_node = ParentNode(list_tag, [])

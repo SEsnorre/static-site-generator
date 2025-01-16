@@ -23,5 +23,20 @@ class TestParagraphToHtmlNode(unittest.TestCase):
             ])
         self.assertEqual(result, expected)
         
+class TestHeaderToHtmlNode(unittest.TestCase):
+    def test_standard_header(self):
+        test_text = ["# header1",
+                "### header3",
+                "###### Header 6 with more text"
+                ]
+             
+        expected = [LeafNode("h1", "header1"),
+                    LeafNode("h3", "header3"),
+                    LeafNode("h6", "Header 6 with more text")
+                    ]
+        
+        for i in range(len(test_text)):
+            self.assertEqual(header_to_html_node(test_text[i]), expected[i])
+        
 if __name__ == "__main__":
     unittest.main()
