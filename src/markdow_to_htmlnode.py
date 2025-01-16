@@ -9,6 +9,8 @@ def markdown_to_html_node(markdown: str) -> ParentNode:
     
     for block in markdown_blocks:
         parent_html_node.children.append(text_to_children(block))
+    
+    return parent_html_node
         
     
 def text_to_children(text:str) -> HTMLNode:
@@ -28,7 +30,7 @@ def text_to_children(text:str) -> HTMLNode:
             raise ValueError("Unknown block type")
         
 def list_to_html_node(text: str, type: BlockType) -> HTMLNode:
-    lines = [x[2:] for x in text.split("\n")]
+    lines = [x.split(" ",1)[1] for x in text.split("\n")]
     list_tag = "ol" if type == BlockType.ORDERED_LIST else "ul"
     list_node = ParentNode(list_tag, [])
     for line in lines:
@@ -36,7 +38,7 @@ def list_to_html_node(text: str, type: BlockType) -> HTMLNode:
     return list_node
         
 def quote_to_html_node(text: str) -> HTMLNode:
-    quote_text = " ".joint([x[2:] for x in text.split("\n")])
+    quote_text = " ".join([x[2:] for x in text.split("\n")])
     return LeafNode("blockquote", quote_text)
   
 def code_to_html_node(text: str) -> HTMLNode:

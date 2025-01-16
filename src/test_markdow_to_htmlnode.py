@@ -37,6 +37,54 @@ class TestHeaderToHtmlNode(unittest.TestCase):
         
         for i in range(len(test_text)):
             self.assertEqual(header_to_html_node(test_text[i]), expected[i])
-        
+            
+            
+class TestMarkdownToHtmlNode(unittest.TestCase):
+    def test_markdown_to_html_node(self):
+        markdown = "# Header\n\nParagraph with **bold** text."
+        result = markdown_to_html_node(markdown)
+        expected = ParentNode("div", [
+            LeafNode("h1", "Header"),
+            ParentNode("p", [
+                LeafNode(None, "Paragraph with "),
+                LeafNode("b", "bold"),
+                LeafNode(None, " text.")
+            ])
+        ])
+        self.assertEqual(result, expected)
+
+    def test_list_to_html_node(self):
+        text = "- item1\n- item2\n- item3"
+        result = list_to_html_node(text, BlockType.UNORDERED_LIST)
+        expected = ParentNode("ul", [
+            LeafNode("li", "item1"),
+            LeafNode("li", "item2"),
+            LeafNode("li", "item3")
+        ])
+
+        self.assertEqual(result, expected)
+
+        text = "1. item1\n2. item2\n3. item3"
+        result = list_to_html_node(text, BlockType.ORDERED_LIST)
+        expected = ParentNode("ol", [
+            LeafNode("li", "item1"),
+            LeafNode("li", "item2"),
+            LeafNode("li", "item3")
+        ])
+        self.assertEqual(result, expected)
+
+    def test_quote_to_html_node(self):
+        text = "> This is a quote"
+        result = quote_to_html_node(text)
+        expected = LeafNode("blockquote", "This is a quote")
+        self.assertEqual(result, expected)
+
+    def test_code_to_html_node(self):
+        text = "```\ncode block\n```"
+        result = code_to_html_node(text)
+        expected = ParentNode("pre", [LeafNode("code", ["code block"])])
+        self.assertEqual(result, expected)
+
+
 if __name__ == "__main__":
     unittest.main()
