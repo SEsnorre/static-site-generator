@@ -4,7 +4,7 @@ from inline_markdown import text_to_textnodes
 from textnode import text_node_to_html_node
 
 def markdown_to_html_node(markdown: str) -> ParentNode:
-    markdown_blocks = markdown_to_blocks(markdown_to_blocks)
+    markdown_blocks = markdown_to_blocks(markdown)
     parent_html_node = ParentNode("div", [])
     
     for block in markdown_blocks:
