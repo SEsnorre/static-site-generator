@@ -1,6 +1,6 @@
 # Static site generator
 
-## my first bigger project
+## my first bigger project. Yeah 🙂
 
 Trying to write a static site generator to learn python concepts and get a bit of training.
 
