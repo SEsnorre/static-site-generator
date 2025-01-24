@@ -34,7 +34,11 @@ def list_to_html_node(text: str, type: BlockType) -> HTMLNode:
     list_tag = "ol" if type == BlockType.ORDERED_LIST else "ul"
     list_node = ParentNode(list_tag, [])
     for line in lines:
-        list_node.children.append(LeafNode("li", line))
+        line_node = ParentNode("li", [])
+        text_nodes = text_to_textnodes(line)
+        for node in text_nodes:
+            line_node.children.append(text_node_to_html_node(node))
+        list_node.children.append(line_node)
     return list_node
         
 def quote_to_html_node(text: str) -> HTMLNode:

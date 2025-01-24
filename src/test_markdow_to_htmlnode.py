@@ -57,9 +57,9 @@ class TestMarkdownToHtmlNode(unittest.TestCase):
         text = "- item1\n- item2\n- item3"
         result = list_to_html_node(text, BlockType.UNORDERED_LIST)
         expected = ParentNode("ul", [
-            LeafNode("li", "item1"),
-            LeafNode("li", "item2"),
-            LeafNode("li", "item3")
+            ParentNode("li", [LeafNode(None, "item1")]),
+            ParentNode("li", [LeafNode(None, "item2")]),
+            ParentNode("li", [LeafNode(None, "item3")])
         ])
 
         self.assertEqual(result, expected)
@@ -67,9 +67,9 @@ class TestMarkdownToHtmlNode(unittest.TestCase):
         text = "1. item1\n2. item2\n3. item3"
         result = list_to_html_node(text, BlockType.ORDERED_LIST)
         expected = ParentNode("ol", [
-            LeafNode("li", "item1"),
-            LeafNode("li", "item2"),
-            LeafNode("li", "item3")
+            ParentNode("li", [LeafNode(None, "item1")]),
+            ParentNode("li", [LeafNode(None, "item2")]),
+            ParentNode("li", [LeafNode(None, "item3")])
         ])
         self.assertEqual(result, expected)
 
