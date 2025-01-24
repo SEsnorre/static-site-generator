@@ -57,7 +57,7 @@ class ParentNode(HTMLNode):
             if type(child) == ParentNode:
                 a = a & self.__children_have_value(child.children)
             else:
-                a = a and child.value != "" and child.value != None
+                a = a and child.value != None
         return a
     
     def __repr__(self):

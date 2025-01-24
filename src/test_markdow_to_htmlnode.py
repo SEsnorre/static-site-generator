@@ -30,9 +30,9 @@ class TestHeaderToHtmlNode(unittest.TestCase):
                 "###### Header 6 with more text"
                 ]
              
-        expected = [LeafNode("h1", "header1"),
-                    LeafNode("h3", "header3"),
-                    LeafNode("h6", "Header 6 with more text")
+        expected = [ParentNode("h1", [LeafNode(None, "header1")]),
+                    ParentNode("h3", [LeafNode(None, "header3")]),
+                    ParentNode("h6", [LeafNode(None, "Header 6 with more text")])
                     ]
         
         for i in range(len(test_text)):
@@ -44,7 +44,7 @@ class TestMarkdownToHtmlNode(unittest.TestCase):
         markdown = "# Header\n\nParagraph with **bold** text."
         result = markdown_to_html_node(markdown)
         expected = ParentNode("div", [
-            LeafNode("h1", "Header"),
+            ParentNode("h1", [LeafNode(None, "Header")]),
             ParentNode("p", [
                 LeafNode(None, "Paragraph with "),
                 LeafNode("b", "bold"),

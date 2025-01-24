@@ -53,7 +53,11 @@ def header_to_html_node(text: str) -> HTMLNode:
     splited_text = text.split(maxsplit=1)
     header_type = len(splited_text[0])
     header_value = splited_text[1]
-    return LeafNode(f"h{header_type}", header_value)
+    header_node = ParentNode(f"h{header_type}", [])
+    text_nodes = text_to_textnodes(header_value)
+    for node in text_nodes:
+        header_node.children.append(text_node_to_html_node(node))   
+    return header_node
 
 def paragraph_to_html_node(text: str) -> HTMLNode:
     text_nodes = text_to_textnodes(text)
